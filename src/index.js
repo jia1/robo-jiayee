@@ -20,6 +20,10 @@ log.info(`Current environment: ${process.env.NODE_ENV}.`);
 
 const bot = new botbuilder.UniversalBot(botConnector.listen());
 
+if (process.env.NODE_ENV === 'production') {
+    server.post('api/messages', botConnector.listen());
+}
+
 bot.dialog('/', [
     function(session, args, next) {
         if (!session.userData.name) {
