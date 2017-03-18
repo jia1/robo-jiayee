@@ -20,9 +20,32 @@ log.info(`Current environment: ${process.env.NODE_ENV}.`);
 
 const bot = new botbuilder.UniversalBot(botConnector.listen());
 
-bot.dialog('/', function(session) {
-    session.send("Hello.");
-});
+bot.dialog('/', [
+    function(session, args, next) {
+        if (!session.userData.name) {
+            // if no user data
+            session.beginDialog('/profile');
+        } else {
+            // run the function below
+            next();
+        }
+    },
+    function(session) {
+        session.send(
+            `Hello ${session.userData.name}, I'm ${chatBotName}!`);
+    }
+]);
+
+bot.dialog('/profile', [
+    function(session) {
+        botbuilder.Prompts.text(session,
+            `Hello! What is your name?`);
+    },
+    function(session, results, next) {
+        session.userData.name = results.response;
+        session.endDialog();
+    }
+]);
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => {
