@@ -1,5 +1,5 @@
 import botbuilder from 'botbuilder';
-import { appId, appPassword } from './config';
+import config from './config';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const connector = isProduction ? new botbuilder.ChatConnector({ appId, appPassword }) :

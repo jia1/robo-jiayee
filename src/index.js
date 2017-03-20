@@ -18,10 +18,11 @@ const chatBotName = 'Robo Jia Yee';
 log.info(`I am ${chatBotName}.`);
 log.info(`Current environment: ${process.env.NODE_ENV}.`);
 
-const bot = new botbuilder.UniversalBot(botConnector.listen());
-
 if (process.env.NODE_ENV === 'production') {
+    const bot = new botbuilder.UniversalBot(botConnector);
     server.post('api/messages', botConnector.listen());
+} else {
+    const bot = new botbuilder.UniversalBot(botConnector.listen());
 }
 
 bot.dialog('/', [
